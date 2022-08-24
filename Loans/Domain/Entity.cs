@@ -12,14 +12,8 @@ namespace Loans.Domain
         int _Id;
         public virtual int Id
         {
-            get
-            {
-                return _Id;
-            }
-            protected set
-            {
-                _Id = value;
-            }
+            get => _Id;
+            protected set => _Id = value;
         }
 
         public override bool Equals(object obj)

@@ -15,9 +15,9 @@ namespace Loans.Tests
             var application = new LoanApplication(42,
                                                   product,
                                                   amount,
-                                                  "Sarah",
+                                                  "Janusz",
                                                   25,
-                                                  "133 Pluralsight Drive, Draper, Utah",
+                                                  "2137, Kremowa, Warszawa",
                                                   64_999);
 
             var mockIdentityVerifier = new Mock<IIdentityVerifier>();
@@ -39,12 +39,22 @@ namespace Loans.Tests
             var application = new LoanApplication(42,
                                                   product,
                                                   amount,
-                                                  "Sarah",
+                                                  "Grażyna",
                                                   25,
-                                                  "133 Pluralsight Drive, Draper, Utah",
+                                                  "42, Brajana i Dżesiki, Białystok",
                                                   65_000);
 
             var mockIdentityVerifier = new Mock<IIdentityVerifier>();
+            mockIdentityVerifier.Setup(x => x.Validate("Grażyna", 
+                                                        25, 
+                                                        "42, Brajana i Dżesiki, Białystok"))
+                                .Returns(true);
+
+            //mockIdentityVerifier.Setup(x => x.Validate(It.IsAny<string>(),
+            //                                           It.IsAny<int>(),
+            //                                           It.IsAny<string>()))
+            //                    .Returns(true);
+
             var mockCreditScorer = new Mock<ICreditScorer>();
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
