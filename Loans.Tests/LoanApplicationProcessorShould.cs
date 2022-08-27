@@ -65,7 +65,17 @@ namespace Loans.Tests
             //mockCreditScorer.Setup(x => x.ScoreResult).Returns(mockScoreResult.Object);
 
             var mockCreditScorer = new Mock<ICreditScorer>();
-            mockCreditScorer.Setup(x => x.Score).Returns(300);
+            mockCreditScorer.SetupProperty(x => x.Count);
+            
+            var mockScoreValue = new Mock<ScoreValue>();
+            mockScoreValue.Setup(x => x.Score).Returns(300);
+
+            var mockScoreResult = new Mock<ScoreResult>(); 
+            mockScoreResult.Setup(x => x.ScoreValue).Returns(mockScoreValue.Object);
+
+            mockCreditScorer.Setup(x => x.ScoreResult).Returns(mockScoreResult.Object);
+            ///mockCreditScorer.Setup(x => x.ScoreResult.ScoreValue.Score).Returns(300);
+            //mockCreditScorer.Setup(x => x.Score).Returns(300);
 
             mockCreditScorer.Setup(x => x.ScoreResult.ScoreValue.Score).Returns(301);
             mockCreditScorer.SetupAllProperties();
