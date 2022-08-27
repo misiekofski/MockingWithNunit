@@ -10,15 +10,14 @@ namespace Loans.Domain.Applications
 
         private readonly IIdentityVerifier _identityVerifier;
         private readonly ICreditScorer _creditScorer;
-        
 
-        public LoanApplicationProcessor(IIdentityVerifier identityVerifier, 
+        public LoanApplicationProcessor(IIdentityVerifier identityVerifier,
                                         ICreditScorer creditScorer)
         {
-            _identityVerifier = 
+            _identityVerifier =
                 identityVerifier ?? throw new ArgumentNullException(nameof(identityVerifier));
 
-            _creditScorer = 
+            _creditScorer =
                 creditScorer ?? throw new ArgumentNullException(nameof(creditScorer));
         }
 
@@ -38,8 +37,8 @@ namespace Loans.Domain.Applications
 
             _identityVerifier.Initialize();
 
-            var isValidIdentity = _identityVerifier.Validate(application.GetApplicantName(), 
-                                                             application.GetApplicantAge(), 
+            var isValidIdentity = _identityVerifier.Validate(application.GetApplicantName(),
+                                                             application.GetApplicantAge(),
                                                              application.GetApplicantAddress());
 
             if (!isValidIdentity)
@@ -48,15 +47,16 @@ namespace Loans.Domain.Applications
                 return;
             }
 
+            _creditScorer.CalculateScore(application.GetApplicantName(),
+                                         application.GetApplicantAddress());
 
-            //_creditScorer.CalculateScore(application.GetApplicantName(), 
-            //                             application.GetApplicantAddress());
+            _creditScorer.Count++;
 
-            //if (_creditScorer.Score < MinimumCreditScore)
-            //{
-            //    application.Decline();
-            //    return;
-            //}
+            if (_creditScorer.ScoreResult.ScoreValue.Score < MinimumCreditScore)
+            {
+                application.Decline();
+                return;
+            }
 
             application.Accept();
         }
