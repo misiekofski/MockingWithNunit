@@ -50,9 +50,16 @@ namespace Loans.Domain.Applications
             _creditScorer.CalculateScore(application.GetApplicantName(),
                                          application.GetApplicantAddress());
 
+<<<<<<< HEAD
             _creditScorer.Count++;
 
             if (_creditScorer.ScoreResult.ScoreValue.Score < MinimumCreditScore)
+=======
+            _creditScorer.CalculateScore(application.GetApplicantName(),
+                                         application.GetApplicantAddress());
+
+            if (_creditScorer.Score < MinimumCreditScore)
+>>>>>>> a4e42c5 (Solution added)
             {
                 application.Decline();
                 return;
